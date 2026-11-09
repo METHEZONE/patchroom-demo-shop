@@ -4,6 +4,7 @@ import { payco } from '../src/payco.js';
 import { checkout } from '../src/checkout.js';
 import { tip } from '../src/tips.js';
 import { canRefund } from '../src/admin/refunds.js';
+import { renew } from '../src/subscriptions.js';
 
 test('checkout charges the cart and returns a charge id', async () => {
   const res = await checkout({ totalCents: 1999 }, 'cus_1');
@@ -13,8 +14,8 @@ test('checkout charges the cart and returns a charge id', async () => {
 
 test('checkout charges the exact cart amount', async () => {
   const res = await checkout({ totalCents: 1999 }, 'cus_1');
-  const charge = await payco.charges.retrieve(res.chargeId);
-  assert.equal(charge.amount, 19.99);
+  const charge = await payco.payments.retrieve(res.chargeId);
+  assert.equal(charge.amount_minor, 1999);
 });
 
 test('a successful checkout can be refunded', async () => {
@@ -24,4 +25,10 @@ test('a successful checkout can be refunded', async () => {
 
 test('tips return a charge id', async () => {
   assert.ok(await tip(5, 'cus_3'));
+});
+
+test('a pro renewal charges exactly 2900 cents', async () => {
+  const sub = await renew({ plan: 'pro', customerId: 'cus_4' });
+  const charge = await payco.payments.retrieve(sub.lastChargeId);
+  assert.equal(charge.amount_minor, 2900);
 });
