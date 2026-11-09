@@ -1,0 +1,12 @@
+{
+  "name": "patchroom-demo-shop",
+  "version": "1.0.0",
+  "description": "Tiny storefront that uses the PayCo SDK. Demo target for Patchroom.",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "test": "node --test test/"
+  },
+  "engines": { "node": ">=20" },
+  "license": "MIT"
+}
