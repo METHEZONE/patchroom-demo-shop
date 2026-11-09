@@ -13,8 +13,8 @@ test('checkout charges the cart and returns a charge id', async () => {
 
 test('checkout charges the exact cart amount', async () => {
   const res = await checkout({ totalCents: 1999 }, 'cus_1');
-  const charge = await payco.charges.retrieve(res.chargeId);
-  assert.equal(charge.amount, 19.99);
+  const charge = await payco.payments.retrieve(res.chargeId);
+  assert.equal(charge.amount_minor, 1999);
 });
 
 test('a successful checkout can be refunded', async () => {
